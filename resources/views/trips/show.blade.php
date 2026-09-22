@@ -19,7 +19,7 @@
                     Trip #{{ $trip->id }}: {{ $trip->origin }} → {{ $trip->destination }}
                 </h1>
                 <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#dfe8ff] text-[#00254e]">
-                    {{ $trip->approval_status ?? 'Ticket Issued / Confirmed' }}
+                    {{ $trip->approval_stage ?? 'Ticket Issued / Confirmed' }}
                 </span>
             </div>
             <p class="text-xs text-[#43474f] mt-1">

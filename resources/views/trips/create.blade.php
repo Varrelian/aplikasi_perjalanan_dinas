@@ -11,13 +11,13 @@
             <span class="material-symbols-outlined text-[14px]">chevron_right</span>
             <a href="{{ route('trips.index') }}" class="hover:text-[#00254e]">Trips</a>
             <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-            <span class="text-[#00254e] font-semibold">New Travel Request</span>
+            <span class="text-[#00254e] font-semibold">Travel Requests</span>
         </nav>
         <h1 class="text-2xl sm:text-3xl font-bold font-['Plus_Jakarta_Sans'] text-[#00254e] tracking-tight">
-            Create Travel Request & Policy Audit
+            Travel Requests
         </h1>
         <p class="text-xs sm:text-sm text-[#43474f] mt-0.5">
-            Submit business trip requirements with automated compliance calculation against corporate policy caps.
+            Submit business trip requirements with automated expense estimation and department budget allocation.
         </p>
     </div>
 
@@ -92,7 +92,7 @@
             <div class="flex items-center gap-2 border-b border-[#c3c6d1]/20 pb-3">
                 <span class="w-6 h-6 rounded-full bg-[#00254e] text-white flex items-center justify-center text-xs font-bold">2</span>
                 <h2 class="text-base font-bold font-['Plus_Jakarta_Sans'] text-[#111c2d]">
-                    Estimated Costs & Policy Compliance Pre-Check
+                    Estimated Costs &amp; Budget Calculation
                 </h2>
             </div>
 

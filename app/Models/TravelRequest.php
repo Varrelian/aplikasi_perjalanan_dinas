@@ -19,8 +19,8 @@ class TravelRequest extends Model
         'departure_date',
         'return_date',
         'purpose',
-        'estimated_cost',
-        'approval_status',
+        'total_cost',
+        'approval_stage',
         'policy_status',
     ];
 

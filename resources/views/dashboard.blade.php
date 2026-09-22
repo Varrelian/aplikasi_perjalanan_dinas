@@ -20,11 +20,13 @@
             </div>
 
             <div class="flex items-center gap-2 sm:gap-3">
-                <a href="{{ route('trips.export', ['trip' => $trip->id, 'format' => 'pdf']) ?? '#' }}"
-                    class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-white border border-[#c3c6d1]/50 text-xs font-semibold text-[#111c2d] hover:bg-[#f0f3ff] transition-all shadow-2xs">
-                    <span class="material-symbols-outlined text-[16px] text-[#00677e]">picture_as_pdf</span>
-                    Export Itinerary PDF
-                </a>
+                @if (isset($spotlightTrip))
+                    <a href="{{ route('trips.export', ['trip' => $spotlightTrip->id, 'format' => 'pdf']) }}"
+                        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-white border border-[#c3c6d1]/50 text-xs font-semibold text-[#111c2d] hover:bg-[#f0f3ff] transition-all shadow-2xs">
+                        <span class="material-symbols-outlined text-[16px] text-[#00677e]">picture_as_pdf</span>
+                        Export Itinerary PDF
+                    </a>
+                @endif
                 <a href="{{ route('trips.create') }}"
                     class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#00254e] text-white text-xs font-semibold hover:bg-[#00346e] transition-all shadow-xs">
                     <span class="material-symbols-outlined text-[16px]">add_circle</span>
@@ -33,8 +35,8 @@
             </div>
         </div>
 
-        <!-- 4 High-Impact Stat Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- 3 High-Impact Stat Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <!-- Stat 1: Active Authorizations -->
             <div class="bg-white p-4 rounded-xl border border-[#c3c6d1]/30 shadow-xs flex items-center justify-between">
                 <div>
@@ -79,21 +81,6 @@
                 </div>
                 <div class="w-10 h-10 rounded-lg bg-[#e8f5e9] flex items-center justify-center text-[#2e7d32]">
                     <span class="material-symbols-outlined text-[22px]">account_balance_wallet</span>
-                </div>
-            </div>
-
-            <!-- Stat 4: Policy Compliance -->
-            <div class="bg-white p-4 rounded-xl border border-[#c3c6d1]/30 shadow-xs flex items-center justify-between">
-                <div>
-                    <div class="text-[11px] font-semibold text-[#737780] uppercase tracking-wider">Policy Compliance</div>
-                    <div class="text-2xl font-bold font-['Plus_Jakarta_Sans'] text-[#00677e] mt-1">98.4%</div>
-                    <div class="text-[10px] text-[#00677e] font-medium mt-1 flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[12px]">verified</span>
-                        Zero unflagged breaches
-                    </div>
-                </div>
-                <div class="w-10 h-10 rounded-lg bg-[#dfe8ff] flex items-center justify-center text-[#00677e]">
-                    <span class="material-symbols-outlined text-[22px]">gavel</span>
                 </div>
             </div>
         </div>
@@ -195,7 +182,7 @@
                         <div>
                             <div class="text-[#737780] font-medium">Total Encumbered Amount</div>
                             <div class="font-bold text-[#111c2d] text-sm mt-0.5">Rp
-                                {{ number_format($spotlightTrip->estimated_cost ?? 6250000, 0, ',', '.') }}</div>
+                                {{ number_format($spotlightTrip->total_cost ?? 6250000, 0, ',', '.') }}</div>
                             <div class="text-[11px] text-[#737780]">Cost Center: CC-CORP-TECH-401</div>
                         </div>
                     </div>
@@ -233,7 +220,7 @@
                             <th class="py-3 px-4">Route & Dates</th>
                             <th class="py-3 px-4">Policy Status</th>
                             <th class="py-3 px-4 text-right">Cost</th>
-                            <th class="py-3 px-4">Approval Status</th>
+                            <th class="py-3 px-4">Approval Stage</th>
                             <th class="py-3 px-4 text-center">Action</th>
                         </tr>
                     </thead>
@@ -268,12 +255,12 @@
                                     @endif
                                 </td>
                                 <td class="py-3.5 px-4 text-right font-bold text-[#111c2d]">
-                                    Rp {{ number_format($trip->estimated_cost, 0, ',', '.') }}
+                                    Rp {{ number_format($trip->total_cost, 0, ',', '.') }}
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <span
                                         class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#dfe8ff] text-[#00254e]">
-                                        {{ $trip->approval_status }}
+                                        {{ $trip->approval_stage }}
                                     </span>
                                 </td>
                                 <td class="py-3.5 px-4 text-center">

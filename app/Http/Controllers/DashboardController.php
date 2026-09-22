@@ -22,21 +22,21 @@ class DashboardController extends Controller
         $totalTripsCount = TravelRequest::count();
 
         $activeTripsCount = TravelRequest::where(function ($query) {
-            $query->where('approval_status', 'like', '%Issued%')
-                  ->orWhere('approval_status', 'like', '%Confirmed%')
-                  ->orWhere('approval_status', 'like', '%Line Manager%')
-                  ->orWhere('approval_status', 'like', '%Finance%')
-                  ->orWhere('approval_status', 'like', '%Director%');
+            $query->where('approval_stage', 'like', '%Issued%')
+                  ->orWhere('approval_stage', 'like', '%Confirmed%')
+                  ->orWhere('approval_stage', 'like', '%Line Manager%')
+                  ->orWhere('approval_stage', 'like', '%Finance%')
+                  ->orWhere('approval_stage', 'like', '%Director%');
         })->count();
 
         $pendingApprovalsCount = TravelRequest::where(function ($query) {
-            $query->where('approval_status', 'like', '%Pending%')
-                  ->orWhere('approval_status', 'like', '%Review%')
-                  ->orWhere('approval_status', 'like', '%Manager%');
+            $query->where('approval_stage', 'like', '%Pending%')
+                  ->orWhere('approval_stage', 'like', '%Review%')
+                  ->orWhere('approval_stage', 'like', '%Manager%');
         })->count();
 
-        // 2. Budget & Policy Compliance Calculations
-        $totalCommittedCost = TravelRequest::where('approval_status', '!=', 'Rejected')->sum('estimated_cost');
+        // 2. Budget & Department Spending Calculations
+        $totalCommittedCost = TravelRequest::where('approval_stage', '!=', 'Rejected')->sum('total_cost');
 
         $compliantCount = TravelRequest::where('policy_status', 'compliant')->count();
         $policyComplianceRate = $totalTripsCount > 0
@@ -45,8 +45,8 @@ class DashboardController extends Controller
 
         // 3. Spotlight Trip (Active Authorization Highlight)
         $spotlightTrip = TravelRequest::with('traveler')
-            ->where('approval_status', 'like', '%Ticket Issued%')
-            ->orWhere('approval_status', 'like', '%Confirmed%')
+            ->where('approval_stage', 'like', '%Ticket Issued%')
+            ->orWhere('approval_stage', 'like', '%Confirmed%')
             ->latest()
             ->first() ?? TravelRequest::with('traveler')->latest()->first();
 
@@ -88,17 +88,17 @@ class DashboardController extends Controller
      */
     public function metrics(): JsonResponse
     {
-        $activeTrips = TravelRequest::whereIn('approval_status', [
+        $activeTrips = TravelRequest::whereIn('approval_stage', [
             'Ticket Issued / Confirmed',
             'Manager Review',
             'Finance Review'
         ])->count();
 
-        $pendingApprovals = TravelRequest::where('approval_status', 'like', '%Pending%')
-            ->orWhere('approval_status', 'like', '%Review%')
+        $pendingApprovals = TravelRequest::where('approval_stage', 'like', '%Pending%')
+            ->orWhere('approval_stage', 'like', '%Review%')
             ->count();
 
-        $quarterlyBudgetUsed = TravelRequest::sum('estimated_cost');
+        $quarterlyBudgetUsed = TravelRequest::sum('total_cost');
 
         return response()->json([
             'status' => 'success',

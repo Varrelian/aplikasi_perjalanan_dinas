@@ -29,16 +29,16 @@
                 <span>Dashboard</span>
             </a>
 
-            <!-- Travel Requests / Trips -->
+            <!-- Trip Workspace (Trips Dashboard) -->
             <a href="{{ route('trips.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('trips.*') && !request()->routeIs('trips.create') ? 'bg-[#00254e] text-white shadow-xs' : 'text-[#43474f] hover:bg-[#f0f3ff] hover:text-[#111c2d]' }}">
-                <span class="material-symbols-outlined text-[18px] {{ request()->routeIs('trips.*') && !request()->routeIs('trips.create') ? 'text-white' : 'text-[#737780]' }}">flight</span>
-                <span>Travel Requests</span>
+                <span class="material-symbols-outlined text-[18px] {{ request()->routeIs('trips.*') && !request()->routeIs('trips.create') ? 'text-white' : 'text-[#737780]' }}">business_center</span>
+                <span>Trip Workspace</span>
             </a>
 
-            <!-- Create Request (Primary CTA) -->
+            <!-- Travel Requests (Create Form) -->
             <a href="{{ route('trips.create') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('trips.create') ? 'bg-[#00254e] text-white shadow-xs' : 'text-[#43474f] hover:bg-[#f0f3ff] hover:text-[#111c2d]' }}">
-                <span class="material-symbols-outlined text-[18px] {{ request()->routeIs('trips.create') ? 'text-white' : 'text-[#737780]' }}">add_circle</span>
-                <span>New Travel Request</span>
+                <span class="material-symbols-outlined text-[18px] {{ request()->routeIs('trips.create') ? 'text-white' : 'text-[#737780]' }}">edit_document</span>
+                <span>Travel Requests</span>
             </a>
 
             <!-- Approvals Center -->
@@ -54,44 +54,19 @@
 
             <!-- Section Divider -->
             <div class="pt-4 pb-1 px-3 text-[10px] font-bold uppercase tracking-wider text-[#737780]">
-                Administration & Policy
+                Budgets &amp; Finance
             </div>
-
-            <!-- Policy Rules -->
-            <a href="{{ route('policies.index') ?? '#' }}" class="flex items-center gap-3 px-3.5 py-2 rounded-lg text-xs font-medium text-[#43474f] hover:bg-[#f0f3ff] hover:text-[#111c2d] transition-all">
-                <span class="material-symbols-outlined text-[18px] text-[#737780]">policy</span>
-                <span>Policy Rules Engine</span>
-            </a>
 
             <!-- Budgets & Cost Centers -->
             <a href="{{ route('budgets.index') ?? '#' }}" class="flex items-center gap-3 px-3.5 py-2 rounded-lg text-xs font-medium text-[#43474f] hover:bg-[#f0f3ff] hover:text-[#111c2d] transition-all">
                 <span class="material-symbols-outlined text-[18px] text-[#737780]">account_balance_wallet</span>
                 <span>Department Budgets</span>
             </a>
-
-            <!-- Reports & Analytics -->
-            <a href="{{ route('reports.index') ?? '#' }}" class="flex items-center gap-3 px-3.5 py-2 rounded-lg text-xs font-medium text-[#43474f] hover:bg-[#f0f3ff] hover:text-[#111c2d] transition-all">
-                <span class="material-symbols-outlined text-[18px] text-[#737780]">monitoring</span>
-                <span>Compliance Analytics</span>
-            </a>
         </nav>
     </div>
 
-    <!-- Bottom Account & Quick Stats Panel -->
+    <!-- Bottom Account Panel -->
     <div class="p-4 border-t border-[#c3c6d1]/20 bg-[#f9f9ff]/80">
-        <div class="p-3 rounded-lg bg-white border border-[#c3c6d1]/30 shadow-2xs mb-3">
-            <div class="text-[10px] uppercase font-bold text-[#737780] tracking-wider mb-1">
-                Policy Compliance
-            </div>
-            <div class="flex items-center justify-between text-xs mb-1.5">
-                <span class="font-bold text-[#00677e]">98.2% Auto-Approved</span>
-                <span class="text-[#737780]">Q3 Target</span>
-            </div>
-            <div class="w-full bg-[#f0f3ff] h-1.5 rounded-full overflow-hidden">
-                <div class="bg-[#00677e] h-full rounded-full" style="width: 98.2%"></div>
-            </div>
-        </div>
-
         <form method="POST" action="{{ route('logout') ?? '#' }}" class="w-full">
             @csrf
             <button type="submit" class="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-[#ba1a1a] hover:bg-[#ffebee] rounded-lg transition-colors">
