@@ -46,4 +46,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/policies', [TravelRequestController::class, 'policyRules'])->name('policies.index');
     Route::get('/budgets', [TravelRequestController::class, 'budgets'])->name('budgets.index');
     Route::get('/reports', [TravelRequestController::class, 'complianceReports'])->name('reports.index');
+
+    // Notifications Center
+    Route::post('/notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
+    Route::post('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
 });

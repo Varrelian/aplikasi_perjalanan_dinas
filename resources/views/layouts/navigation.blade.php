@@ -41,9 +41,11 @@
                     <span class="material-symbols-outlined text-[18px] {{ request()->routeIs('approvals.*') ? 'text-white' : 'text-[#737780]' }}">verified</span>
                     <span>Approvals Center</span>
                 </div>
-                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#ba1a1a] text-white">
-                    {{ $pendingApprovalsCount ?? 0 }}
-                </span>
+                @if(($pendingApprovalsCount ?? 0) > 0)
+                    <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#ba1a1a] text-white">
+                        {{ $pendingApprovalsCount }}
+                    </span>
+                @endif
             </a>
 
             <!-- Section Divider -->

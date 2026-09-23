@@ -94,6 +94,25 @@ class TravelRequestController extends Controller
             'submitted_at'        => now(),
         ]);
 
+        // Role-based notification:
+        // 1. Notify traveler confirmation
+        if (auth()->check()) {
+            auth()->user()->notify(new \App\Notifications\TripSubmittedNotification($trip));
+        }
+
+        // 2. Notify Line Managers / Approvers
+        $approvers = \App\Models\User::where(function ($q) {
+            $q->where('role', 'like', '%Approver%')
+              ->orWhere('role', 'like', '%Manager%')
+              ->orWhereIn('band', ['Band 4', 'Band 5']);
+        })->get();
+
+        foreach ($approvers as $approver) {
+            if ($approver->id !== auth()->id()) {
+                $approver->notify(new \App\Notifications\TripSubmittedNotification($trip));
+            }
+        }
+
         return redirect()->route('trips.show', $trip->id)
                          ->with('success', "Travel Request #{$trip->request_code} submitted successfully and routed to Line Manager.");
     }
