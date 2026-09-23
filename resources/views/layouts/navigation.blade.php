@@ -30,15 +30,9 @@
             </a>
 
             <!-- Trip Workspace (Trips Dashboard) -->
-            <a href="{{ route('trips.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('trips.*') && !request()->routeIs('trips.create') ? 'bg-[#00254e] text-white shadow-xs' : 'text-[#43474f] hover:bg-[#f0f3ff] hover:text-[#111c2d]' }}">
-                <span class="material-symbols-outlined text-[18px] {{ request()->routeIs('trips.*') && !request()->routeIs('trips.create') ? 'text-white' : 'text-[#737780]' }}">business_center</span>
+            <a href="{{ route('trips.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('trips.*') ? 'bg-[#00254e] text-white shadow-xs' : 'text-[#43474f] hover:bg-[#f0f3ff] hover:text-[#111c2d]' }}">
+                <span class="material-symbols-outlined text-[18px] {{ request()->routeIs('trips.*') ? 'text-white' : 'text-[#737780]' }}">business_center</span>
                 <span>Trip Workspace</span>
-            </a>
-
-            <!-- Travel Requests (Create Form) -->
-            <a href="{{ route('trips.create') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold transition-all {{ request()->routeIs('trips.create') ? 'bg-[#00254e] text-white shadow-xs' : 'text-[#43474f] hover:bg-[#f0f3ff] hover:text-[#111c2d]' }}">
-                <span class="material-symbols-outlined text-[18px] {{ request()->routeIs('trips.create') ? 'text-white' : 'text-[#737780]' }}">edit_document</span>
-                <span>Travel Requests</span>
             </a>
 
             <!-- Approvals Center -->
@@ -48,18 +42,24 @@
                     <span>Approvals Center</span>
                 </div>
                 <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#ba1a1a] text-white">
-                    {{ $pendingApprovalsCount ?? 3 }}
+                    {{ $pendingApprovalsCount ?? 0 }}
                 </span>
             </a>
 
             <!-- Section Divider -->
             <div class="pt-4 pb-1 px-3 text-[10px] font-bold uppercase tracking-wider text-[#737780]">
-                Budgets &amp; Finance
+                Governance &amp; Finance
             </div>
 
+            <!-- Corporate Travel Policies -->
+            <a href="{{ route('policies.index') }}" class="flex items-center gap-3 px-3.5 py-2 rounded-lg text-xs font-medium transition-all {{ request()->routeIs('policies.*') ? 'bg-[#00254e] text-white shadow-xs' : 'text-[#43474f] hover:bg-[#f0f3ff] hover:text-[#111c2d]' }}">
+                <span class="material-symbols-outlined text-[18px] {{ request()->routeIs('policies.*') ? 'text-white' : 'text-[#737780]' }}">gavel</span>
+                <span>Travel Policies</span>
+            </a>
+
             <!-- Budgets & Cost Centers -->
-            <a href="{{ route('budgets.index') ?? '#' }}" class="flex items-center gap-3 px-3.5 py-2 rounded-lg text-xs font-medium text-[#43474f] hover:bg-[#f0f3ff] hover:text-[#111c2d] transition-all">
-                <span class="material-symbols-outlined text-[18px] text-[#737780]">account_balance_wallet</span>
+            <a href="{{ route('budgets.index') }}" class="flex items-center gap-3 px-3.5 py-2 rounded-lg text-xs font-medium transition-all {{ request()->routeIs('budgets.*') ? 'bg-[#00254e] text-white shadow-xs' : 'text-[#43474f] hover:bg-[#f0f3ff] hover:text-[#111c2d]' }}">
+                <span class="material-symbols-outlined text-[18px] {{ request()->routeIs('budgets.*') ? 'text-white' : 'text-[#737780]' }}">account_balance_wallet</span>
                 <span>Department Budgets</span>
             </a>
         </nav>
