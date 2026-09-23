@@ -37,7 +37,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-[#111c2d] mb-1">Traveler Employee</label>
-                    <input type="text" value="{{ auth()->user()->name ?? 'Felix Gonelius' }} ({{ auth()->user()->grade ?? 'Senior Architect' }})" disabled class="w-full h-10 px-3 bg-[#f0f3ff] border border-[#c3c6d1]/50 rounded-lg text-xs font-medium text-[#43474f] cursor-not-allowed">
+                    <input type="text" value="{{ auth()->user()->name ?? 'Corporate Employee' }} ({{ auth()->user()->job_title ?? auth()->user()->band ?? 'Employee' }})" disabled class="w-full h-10 px-3 bg-[#f0f3ff] border border-[#c3c6d1]/50 rounded-lg text-xs font-medium text-[#43474f] cursor-not-allowed">
                 </div>
 
                 <div>

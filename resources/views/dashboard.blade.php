@@ -228,16 +228,16 @@
                         @forelse($recentTrips ?? [] as $trip)
                             <tr class="hover:bg-[#f0f3ff]/40 transition-colors">
                                 <td class="py-3.5 px-4 font-mono font-bold text-[#00254e]">
-                                    #{{ $trip->id }}
+                                    #{{ $trip->request_code ?? $trip->id }}
                                 </td>
                                 <td class="py-3.5 px-4">
-                                    <div class="font-bold text-[#111c2d]">{{ $trip->traveler->name }}</div>
-                                    <div class="text-[10px] text-[#737780]">{{ $trip->traveler->department }}</div>
+                                    <div class="font-bold text-[#111c2d]">{{ optional($trip->traveler)->name ?? 'Corporate Traveler' }}</div>
+                                    <div class="text-[10px] text-[#737780]">{{ optional($trip->traveler)->department ?? 'General' }}</div>
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <div class="font-semibold text-[#111c2d]">{{ $trip->origin_code }} →
                                         {{ $trip->dest_code }}</div>
-                                    <div class="text-[10px] text-[#737780]">{{ $trip->departure_date }}</div>
+                                    <div class="text-[10px] text-[#737780]">{{ $trip->departure_date ? \Carbon\Carbon::parse($trip->departure_date)->format('M d, Y') : '-' }}</div>
                                 </td>
                                 <td class="py-3.5 px-4">
                                     @if ($trip->policy_status === 'compliant')

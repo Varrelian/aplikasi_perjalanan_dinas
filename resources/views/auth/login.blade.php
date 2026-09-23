@@ -156,7 +156,7 @@
                 <div class="grid grid-cols-2 gap-2">
                     <button
                         type="button"
-                        onclick="document.getElementById('email').value='andi.pratama@travelsys.internal'; document.getElementById('password').value='secret123';"
+                        onclick="document.getElementById('email').value='andi.pratama@travelsys.internal'; document.getElementById('password').value='password';"
                         class="p-2 text-left rounded-lg bg-[#f0f3ff] hover:bg-[#dfe8ff] text-[11px] transition-colors"
                     >
                         <p class="font-bold text-[#00254e]">Andi Pratama</p>
@@ -164,7 +164,7 @@
                     </button>
                     <button
                         type="button"
-                        onclick="document.getElementById('email').value='siti.rahma@travelsys.internal'; document.getElementById('password').value='secret123';"
+                        onclick="document.getElementById('email').value='siti.rahma@travelsys.internal'; document.getElementById('password').value='password';"
                         class="p-2 text-left rounded-lg bg-[#f0f3ff] hover:bg-[#dfe8ff] text-[11px] transition-colors"
                     >
                         <p class="font-bold text-[#00254e]">Siti Rahma</p>

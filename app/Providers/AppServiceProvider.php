@@ -19,6 +19,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        view()->composer('layouts.navigation', function ($view) {
+            try {
+                $count = \App\Models\TravelRequest::where(function ($q) {
+                    $q->where('approval_stage', 'like', '%Pending%')
+                      ->orWhere('approval_stage', 'like', '%Review%')
+                      ->orWhere('approval_stage', 'like', '%Manager%')
+                      ->orWhere('approval_stage', 'like', '%Director%');
+                })->count();
+                $view->with('pendingApprovalsCount', $count);
+            } catch (\Throwable $e) {
+                $view->with('pendingApprovalsCount', 0);
+            }
+        });
     }
 }
