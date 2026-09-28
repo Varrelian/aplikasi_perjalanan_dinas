@@ -24,6 +24,7 @@ class User extends Authenticatable
         'department',
         'band',
         'role',
+        'phone',
         'avatar_url',
     ];
 
