@@ -38,51 +38,54 @@
         <!-- 3 High-Impact Stat Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <!-- Stat 1: Active Authorizations -->
-            <div class="bg-white p-4 rounded-xl border border-[#c3c6d1]/30 shadow-xs flex items-center justify-between">
+            <a href="{{ route('trips.index') }}" class="bg-white p-4 rounded-xl border border-[#c3c6d1]/30 hover:border-[#00254e]/50 hover:shadow-xs transition-all flex items-center justify-between group">
                 <div>
-                    <div class="text-[11px] font-semibold text-[#737780] uppercase tracking-wider">Active Authorizations
+                    <div class="text-[11px] font-semibold text-[#737780] uppercase tracking-wider group-hover:text-[#00254e] transition-colors">Active Authorizations
                     </div>
                     <div class="text-2xl font-bold font-['Plus_Jakarta_Sans'] text-[#111c2d] mt-1">
-                        {{ $activeTripsCount ?? 2 }} Trips</div>
+                        {{ $activeTripsCount ?? 0 }} Trips</div>
                     <div class="text-[10px] text-[#00677e] font-medium mt-1 flex items-center gap-1">
                         <span class="material-symbols-outlined text-[12px]">flight_takeoff</span>
-                        1 currently en-route
+                        <span>View Trip Workspace</span>
                     </div>
                 </div>
-                <div class="w-10 h-10 rounded-lg bg-[#f0f3ff] flex items-center justify-center text-[#00254e]">
+                <div class="w-10 h-10 rounded-lg bg-[#f0f3ff] group-hover:bg-[#00254e] group-hover:text-white transition-all flex items-center justify-center text-[#00254e]">
                     <span class="material-symbols-outlined text-[22px]">airplane_ticket</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Stat 2: Pending Approvals -->
-            <div class="bg-white p-4 rounded-xl border border-[#c3c6d1]/30 shadow-xs flex items-center justify-between">
+            <a href="{{ route('approvals.index') }}" class="bg-white p-4 rounded-xl border border-[#c3c6d1]/30 hover:border-[#ba1a1a]/50 hover:shadow-xs transition-all flex items-center justify-between group">
                 <div>
-                    <div class="text-[11px] font-semibold text-[#737780] uppercase tracking-wider">Pending Approvals</div>
+                    <div class="text-[11px] font-semibold text-[#737780] uppercase tracking-wider group-hover:text-[#ba1a1a] transition-colors">Pending Approvals</div>
                     <div class="text-2xl font-bold font-['Plus_Jakarta_Sans'] text-[#ba1a1a] mt-1">
-                        {{ $pendingApprovalsCount ?? 3 }} Requests</div>
+                        {{ $pendingApprovalsCount ?? 0 }} Requests</div>
                     <div class="text-[10px] text-[#ba1a1a] font-medium mt-1 flex items-center gap-1">
                         <span class="material-symbols-outlined text-[12px]">schedule</span>
-                        Avg SLA: 4.2 hours remaining
+                        <span>Open Decision Center</span>
                     </div>
                 </div>
-                <div class="w-10 h-10 rounded-lg bg-[#ffebee] flex items-center justify-center text-[#ba1a1a]">
+                <div class="w-10 h-10 rounded-lg bg-[#ffebee] group-hover:bg-[#ba1a1a] group-hover:text-white transition-all flex items-center justify-center text-[#ba1a1a]">
                     <span class="material-symbols-outlined text-[22px]">pending_actions</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Stat 3: Q3 Budget Allocated -->
-            <div class="bg-white p-4 rounded-xl border border-[#c3c6d1]/30 shadow-xs flex items-center justify-between">
+            <a href="{{ route('budgets.index') }}" class="bg-white p-4 rounded-xl border border-[#c3c6d1]/30 hover:border-[#2e7d32]/50 hover:shadow-xs transition-all flex items-center justify-between group">
                 <div>
-                    <div class="text-[11px] font-semibold text-[#737780] uppercase tracking-wider">Q3 Budget Committed</div>
-                    <div class="text-2xl font-bold font-['Plus_Jakarta_Sans'] text-[#111c2d] mt-1">Rp 64.2M</div>
-                    <div class="text-[10px] text-[#737780] font-medium mt-1">
-                        68% of Rp 95M Cap used
+                    <div class="text-[11px] font-semibold text-[#737780] uppercase tracking-wider group-hover:text-[#2e7d32] transition-colors">Total Encumbered Spend</div>
+                    <div class="text-2xl font-bold font-['Plus_Jakarta_Sans'] text-[#111c2d] mt-1">
+                        Rp {{ number_format(($totalCommittedCost ?? 0) / 1000000, 1) }}M
+                    </div>
+                    <div class="text-[10px] text-[#737780] font-medium mt-1 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[12px]">account_balance_wallet</span>
+                        <span>Manage Cost Centers</span>
                     </div>
                 </div>
-                <div class="w-10 h-10 rounded-lg bg-[#e8f5e9] flex items-center justify-center text-[#2e7d32]">
+                <div class="w-10 h-10 rounded-lg bg-[#e8f5e9] group-hover:bg-[#2e7d32] group-hover:text-white transition-all flex items-center justify-center text-[#2e7d32]">
                     <span class="material-symbols-outlined text-[22px]">account_balance_wallet</span>
                 </div>
-            </div>
+            </a>
         </div>
 
         <!-- Active Spotlight Travel Authorization Card -->
@@ -228,16 +231,16 @@
                         @forelse($recentTrips ?? [] as $trip)
                             <tr class="hover:bg-[#f0f3ff]/40 transition-colors">
                                 <td class="py-3.5 px-4 font-mono font-bold text-[#00254e]">
-                                    #{{ $trip->id }}
+                                    #{{ $trip->request_code ?? $trip->id }}
                                 </td>
                                 <td class="py-3.5 px-4">
-                                    <div class="font-bold text-[#111c2d]">{{ $trip->traveler->name }}</div>
-                                    <div class="text-[10px] text-[#737780]">{{ $trip->traveler->department }}</div>
+                                    <div class="font-bold text-[#111c2d]">{{ optional($trip->traveler)->name ?? 'Corporate Traveler' }}</div>
+                                    <div class="text-[10px] text-[#737780]">{{ optional($trip->traveler)->department ?? 'General' }}</div>
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <div class="font-semibold text-[#111c2d]">{{ $trip->origin_code }} →
                                         {{ $trip->dest_code }}</div>
-                                    <div class="text-[10px] text-[#737780]">{{ $trip->departure_date }}</div>
+                                    <div class="text-[10px] text-[#737780]">{{ $trip->departure_date ? \Carbon\Carbon::parse($trip->departure_date)->format('M d, Y') : '-' }}</div>
                                 </td>
                                 <td class="py-3.5 px-4">
                                     @if ($trip->policy_status === 'compliant')

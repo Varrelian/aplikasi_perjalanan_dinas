@@ -45,22 +45,9 @@ Route::middleware(['auth'])->group(function () {
     // Policies & Budgets
     Route::get('/policies', [TravelRequestController::class, 'policyRules'])->name('policies.index');
     Route::get('/budgets', [TravelRequestController::class, 'budgets'])->name('budgets.index');
-});
-
-    // Executive Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    // Travel Requests (Trips) Resource
-    Route::resource('trips', TravelRequestController::class);
-    Route::get('/trips/{trip}/export', [TravelRequestController::class, 'exportPdf'])->name('trips.export');
-    Route::post('/trips/{trip}/pool-join', [TravelRequestController::class, 'joinTransitPool'])->name('trips.pool.join');
-
-    // Approvals & Decision Center
-    Route::get('/approvals', [ApprovalController::class, 'index'])->name('approvals.index');
-    Route::get('/approvals/{trip}', [ApprovalController::class, 'show'])->name('approvals.show');
-    Route::post('/approvals/{trip}/decision', [ApprovalController::class, 'recordDecision'])->name('approvals.decision');
-
-    // Policies & Budgets
-    Route::get('/policies', [TravelRequestController::class, 'policyRules'])->name('policies.index');
-    Route::get('/budgets', [TravelRequestController::class, 'budgets'])->name('budgets.index');
     Route::get('/reports', [TravelRequestController::class, 'complianceReports'])->name('reports.index');
+
+    // Notifications Center
+    Route::post('/notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
+    Route::post('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+});

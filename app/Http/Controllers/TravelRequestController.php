@@ -51,23 +51,70 @@ class TravelRequestController extends Controller
             'per_diem_cost'  => 'nullable|numeric',
         ]);
 
+        $cities = [
+            'CGK' => 'Jakarta (CGK)',
+            'HLP' => 'Jakarta (HLP)',
+            'SUB' => 'Surabaya (SUB)',
+            'DPS' => 'Bali (DPS)',
+            'SIN' => 'Singapore (SIN)',
+            'KNO' => 'Medan (KNO)',
+            'BPN' => 'Balikpapan (BPN)',
+        ];
+
+        $flightCost = (float)($validated['flight_cost'] ?? 0);
+        $hotelCost = (float)($validated['hotel_cost'] ?? 0);
+        $transitCost = (float)($validated['per_diem_cost'] ?? 0);
+        $totalCost = $flightCost + $hotelCost + $transitCost;
+
         $trip = TravelRequest::create([
-            'user_id'        => auth()->id() ?? 1,
-            'cost_center_id' => $validated['cost_center_id'],
-            'origin_code'    => $validated['origin_code'],
-            'dest_code'      => $validated['dest_code'],
-            'origin'         => $validated['origin_code'] === 'CGK' ? 'Jakarta' : 'Surabaya',
-            'destination'    => $validated['dest_code'] === 'SUB' ? 'Surabaya' : 'Singapore',
-            'departure_date' => $validated['departure_date'],
-            'return_date'    => $validated['return_date'],
-            'purpose'        => $validated['purpose'],
-            'total_cost'     => ($validated['flight_cost'] ?? 0) + ($validated['hotel_cost'] ?? 0) + ($validated['per_diem_cost'] ?? 0),
-            'approval_stage' => 'Pending Line Manager',
-            'policy_status'  => 'compliant',
+            'user_id'             => auth()->id() ?? 1,
+            'cost_center'         => $validated['cost_center_id'],
+            'origin_code'         => $validated['origin_code'],
+            'dest_code'           => $validated['dest_code'],
+            'origin'              => $cities[$validated['origin_code']] ?? $validated['origin_code'],
+            'destination'         => $cities[$validated['dest_code']] ?? $validated['dest_code'],
+            'departure_date'      => $validated['departure_date'],
+            'return_date'         => $validated['return_date'],
+            'departure_time_slot' => 'Morning Flight (06:00 - 11:00)',
+            'return_time_slot'    => 'Evening Flight (17:00 - 22:00)',
+            'purpose_type'        => 'Client Meeting',
+            'purpose_title'       => \Illuminate\Support\Str::limit($validated['purpose'], 100),
+            'purpose_description' => $validated['purpose'],
+            'flight_cost'         => $flightCost,
+            'hotel_cost'          => $hotelCost,
+            'transit_cost'        => $transitCost,
+            'total_cost'          => $totalCost,
+            'currency'            => 'IDR',
+            'policy_status'       => 'compliant',
+            'budget_status'       => 'available',
+            'approval_stage'      => 'Line Manager Review',
+            'stage_step'          => 1,
+            'total_steps'         => 6,
+            'overall_status'      => 'pending_approval',
+            'submitted_at'        => now(),
         ]);
 
+        // Role-based notification:
+        // 1. Notify traveler confirmation
+        if (auth()->check()) {
+            auth()->user()->notify(new \App\Notifications\TripSubmittedNotification($trip));
+        }
+
+        // 2. Notify Line Managers / Approvers
+        $approvers = \App\Models\User::where(function ($q) {
+            $q->where('role', 'like', '%Approver%')
+              ->orWhere('role', 'like', '%Manager%')
+              ->orWhereIn('band', ['Band 4', 'Band 5']);
+        })->get();
+
+        foreach ($approvers as $approver) {
+            if ($approver->id !== auth()->id()) {
+                $approver->notify(new \App\Notifications\TripSubmittedNotification($trip));
+            }
+        }
+
         return redirect()->route('trips.show', $trip->id)
-                         ->with('success', "Travel Request #{$trip->id} submitted successfully and routed to Line Manager.");
+                         ->with('success', "Travel Request #{$trip->request_code} submitted successfully and routed to Line Manager.");
     }
 
     /**

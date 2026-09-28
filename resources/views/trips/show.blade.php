@@ -23,7 +23,7 @@
                 </span>
             </div>
             <p class="text-xs text-[#43474f] mt-1">
-                Traveler: <strong>{{ $trip->traveler->name ?? 'Felix Gonelius' }}</strong> ({{ $trip->traveler->department ?? 'Technology' }}) • Purpose: {{ $trip->purpose ?? 'Astra Infra Surabaya Migration' }}
+                Traveler: <strong>{{ optional($trip->traveler)->name ?? 'Corporate Traveler' }}</strong> ({{ optional($trip->traveler)->department ?? 'General' }}) • Purpose: {{ $trip->purpose_title ?? $trip->purpose_description ?? $trip->purpose ?? 'Business Trip' }}
             </p>
         </div>
 
@@ -129,7 +129,12 @@
                         <div class="text-base font-bold text-[#111c2d]">Shangri-La Hotel Surabaya</div>
                         <p class="text-xs text-[#737780]">Jl. Mayjen Sungkono No.120, Sawahan, Surabaya, Jawa Timur</p>
                         <div class="text-xs text-[#43474f] pt-1">
-                            <strong>4 Nights:</strong> Oct 24, 2026 – Oct 28, 2026 • Executive King Room
+                            @if($trip->departure_date && $trip->return_date)
+                                <strong>{{ max(1, \Carbon\Carbon::parse($trip->departure_date)->diffInDays(\Carbon\Carbon::parse($trip->return_date))) }} Nights:</strong> {{ \Carbon\Carbon::parse($trip->departure_date)->format('M d, Y') }} – {{ \Carbon\Carbon::parse($trip->return_date)->format('M d, Y') }}
+                            @else
+                                <strong>Itinerary Dates:</strong> Scheduled
+                            @endif
+                            • Executive Room
                         </div>
                         <div class="inline-flex items-center gap-1 text-[11px] text-[#00677e] font-semibold bg-[#dfe8ff] px-2 py-0.5 rounded">
                             <span class="material-symbols-outlined text-[14px]">local_cafe</span>
@@ -186,26 +191,31 @@
 
             <!-- Cost Encumbrance Breakdown -->
             <div class="bg-white rounded-xl border border-[#c3c6d1]/40 shadow-xs p-4 space-y-3">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-[#00254e]">
-                    Cost Center Allocation
-                </h3>
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-[#00254e]">
+                        Cost Center Allocation
+                    </h3>
+                    <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-gray-100 text-[#00254e]">
+                        {{ $trip->cost_center }}
+                    </span>
+                </div>
 
                 <div class="space-y-2 text-xs divide-y divide-[#c3c6d1]/20">
                     <div class="flex justify-between py-1">
-                        <span class="text-[#737780]">Roundtrip Airfare (Garuda)</span>
-                        <span class="font-bold text-[#111c2d]">Rp 2.400.000</span>
+                        <span class="text-[#737780]">Roundtrip Airfare</span>
+                        <span class="font-bold text-[#111c2d]">Rp {{ number_format($trip->flight_cost ?? 0, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between py-1">
-                        <span class="text-[#737780]">Hotel (4 Nights Shangri-La)</span>
-                        <span class="font-bold text-[#111c2d]">Rp 3.850.000</span>
+                        <span class="text-[#737780]">Hotel & Lodging</span>
+                        <span class="font-bold text-[#111c2d]">Rp {{ number_format($trip->hotel_cost ?? 0, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between py-1">
                         <span class="text-[#737780]">Per Diem & Ground Transit</span>
-                        <span class="font-bold text-[#111c2d]">Rp 800.000</span>
+                        <span class="font-bold text-[#111c2d]">Rp {{ number_format($trip->transit_cost ?? 0, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between pt-2 text-sm font-bold text-[#00254e]">
                         <span>Total Encumbered</span>
-                        <span>Rp 7.050.000</span>
+                        <span>Rp {{ number_format($trip->total_cost ?? 0, 0, ',', '.') }}</span>
                     </div>
                 </div>
             </div>

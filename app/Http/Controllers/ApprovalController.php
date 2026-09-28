@@ -117,6 +117,23 @@ class ApprovalController extends Controller
 
         $trip->save();
 
+        // Role-based notification: Notify employee about decision
+        if ($trip->traveler) {
+            $trip->traveler->notify(new \App\Notifications\TripDecisionNotification($trip, $decision, $notes));
+        }
+
+        // Role-based escalation: If forwarded to Finance, notify Finance approvers
+        if ($decision === 'approve' && str_contains($trip->approval_stage, 'Finance')) {
+            $financeApprovers = \App\Models\User::where('role', 'like', '%Finance%')
+                ->orWhere('band', 'Band 5')
+                ->get();
+            foreach ($financeApprovers as $fa) {
+                if ($fa->id !== auth()->id()) {
+                    $fa->notify(new \App\Notifications\TripSubmittedNotification($trip));
+                }
+            }
+        }
+
         if ($request->wantsJson()) {
             return response()->json([
                 'success' => true,

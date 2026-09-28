@@ -20,10 +20,14 @@
             </p>
         </div>
 
-        <div class="flex items-center gap-3">
-            <a href="{{ route('trips.create') }}" class="h-10 px-4 bg-[#00677e] hover:bg-[#005568] text-white text-xs font-bold rounded-xl shadow-xs flex items-center gap-2 transition-all">
-                <span class="material-symbols-outlined text-[18px]">add_circle</span>
-                <span>Submit Requisition</span>
+        <div class="flex items-center gap-2">
+            <a href="{{ route('policies.index') }}" class="h-10 px-3.5 bg-white border border-[#c3c6d1]/60 hover:bg-[#f0f3ff] text-xs font-semibold text-[#111c2d] rounded-xl shadow-2xs flex items-center gap-1.5 transition-all">
+                <span class="material-symbols-outlined text-[18px] text-[#00254e]">gavel</span>
+                <span>Travel Policies</span>
+            </a>
+            <a href="{{ route('trips.index') }}" class="h-10 px-3.5 bg-[#00254e] hover:bg-[#001833] text-white text-xs font-bold rounded-xl shadow-xs flex items-center gap-1.5 transition-all">
+                <span class="material-symbols-outlined text-[18px]">receipt_long</span>
+                <span>View Encumbered Trips</span>
             </a>
         </div>
     </div>
